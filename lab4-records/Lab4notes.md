@@ -178,3 +178,43 @@ gnatmake: "ttt.adb" compilation error
 
 ------- cleaning up
 
+Fix:
+
+```haskell
+    type pos_variant is (InProgress, WON);
+
+    type GamePos (variation : pos_variant) is
+        record
+            board : TTTBoard
+            case variation is 
+                when InProgress =>
+                    turn : Player;
+                    value : Float;
+                when WON =>
+                    winner : Player;
+            end case;
+        end record;
+```
+
+## 4.4(c)
+
+```haskell
+    procedure Put_Pos(pos : GamePos) is
+    begin
+        case pos.variation is
+        when InProgress =>
+            Put_Board(pos.board);
+            Put("Player to make the next move: ");
+            Put(pos.turn);
+            Put_Line("");
+            Put("Estimated advantage of player X over player O is: ");
+            Put(pos.value, 0, 0, 0);
+            Put_Line("");
+        when WON =>
+            Put_Board(pos.board);
+            Put("player won: ");
+            Put(pos.winner);
+        end case;
+    end Put_Pos;
+```
+
