@@ -1,0 +1,172 @@
+var _user$project$Main$cellStyle = {
+	ctor: '::',
+	_0: {ctor: '_Tuple2', _0: 'border', _1: '0px solid grey'},
+	_1: {
+		ctor: '::',
+		_0: {ctor: '_Tuple2', _0: 'width', _1: '10px'},
+		_1: {
+			ctor: '::',
+			_0: {ctor: '_Tuple2', _0: 'height', _1: '20px'},
+			_1: {
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'text-align', _1: 'center'},
+				_1: {ctor: '[]'}
+			}
+		}
+	}
+};
+var _user$project$Main$tableStyle = {
+	ctor: '::',
+	_0: {ctor: '_Tuple2', _0: 'border', _1: '2px solid black'},
+	_1: {ctor: '[]'}
+};
+var _user$project$Main$slider = function (_p0) {
+	var _p1 = _p0;
+	var _p4 = _p1.minValue;
+	var _p3 = _p1.maxValue;
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				_elm_lang$core$Basics$toString(_p4)),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$input,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$type_('range'),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$min(
+								_elm_lang$core$Basics$toString(_p4)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$max(
+									_elm_lang$core$Basics$toString(_p3)),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$value(
+										_elm_lang$core$Basics$toString(_p1.model)),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(
+											function (_p2) {
+												return _p1.makeMsg(
+													A2(
+														_elm_lang$core$Result$withDefault,
+														0,
+														_elm_lang$core$String$toInt(_p2)));
+											}),
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						_elm_lang$core$Basics$toString(_p3)),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Main$shouldShowS = F3(
+	function (s, i, j) {
+		return _elm_lang$core$Native_Utils.cmp(
+			_elm_lang$core$Basics$abs(
+				(Math.pow(i, 2) + Math.pow(j, 2)) - Math.pow(s, 2)),
+			s + 1) < 1;
+	});
+var _user$project$Main$shouldShow = F3(
+	function (size, i, j) {
+		return A3(_user$project$Main$shouldShowS, size, i, j);
+	});
+var _user$project$Main$circleLines = function (size) {
+	var circleCell = F2(
+		function (i, jj) {
+			var j = (jj / 2) | 0;
+			return A3(_user$project$Main$shouldShow, size, i, j) ? '*' : ' ';
+		});
+	var circleLine = function (i) {
+		return A2(
+			_elm_lang$core$List$map,
+			circleCell(i),
+			A2(_elm_lang$core$List$range, 1, 2 * size));
+	};
+	return A2(
+		_elm_lang$core$List$map,
+		circleLine,
+		A2(_elm_lang$core$List$range, 1, size));
+};
+var _user$project$Main$tableFromLines = F2(
+	function (lines, model) {
+		var cell = function (content) {
+			return A2(
+				_elm_lang$html$Html$td,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$cellStyle),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(content),
+					_1: {ctor: '[]'}
+				});
+		};
+		var row = function (line) {
+			return A2(
+				_elm_lang$html$Html$tr,
+				{ctor: '[]'},
+				A2(_elm_lang$core$List$map, cell, line));
+		};
+		var lines = _user$project$Main$circleLines(model);
+		var rows = A2(_elm_lang$core$List$map, row, lines);
+		return A2(
+			_elm_lang$html$Html$table,
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html_Attributes$style(_user$project$Main$tableStyle),
+				_1: {ctor: '[]'}
+			},
+			rows);
+	});
+var _user$project$Main$view = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _user$project$Main$slider(
+				{makeMsg: _elm_lang$core$Basics$identity, minValue: 1, maxValue: 20, model: model}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'size = ',
+						_elm_lang$core$Basics$toString(model))),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_user$project$Main$tableFromLines,
+						_user$project$Main$circleLines(model),
+						model),
+					_1: {ctor: '[]'}
+				}
+			}
+		});
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		return msg;
+	});
+var _user$project$Main$initModel = 15;
+var _user$project$Main$main = _elm_lang$html$Html$beginnerProgram(
+	{model: _user$project$Main$initModel, view: _user$project$Main$view, update: _user$project$Main$update})();
